@@ -11,7 +11,7 @@ on:
 
   push:
     branches:
-      - 'master/**'
+      - 'release/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -25,12 +25,12 @@ jobs:
       - uses: actions/checkout@v3
 
       # Set Current Date As Env Variable
-      - name: 3 June 2024
-        run: echo "3 June 2024 =$(3 June 2024 +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Set current date as env variable
+        run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       # Set Repository Name As Env Variable
-      - name: ScreenTime
-        run: echo "ScreenTime =$(echo '${{ github.ScreenTime }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
+      - name: Set repository name as env variable
+        run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
 
       - name: Set Up JDK
         uses: actions/setup-java@v3
@@ -65,22 +65,22 @@ jobs:
 
       # Upload Artifact Build
       # Noted For Output [main_project_module]/build/outputs/apk/debug/
-      - name: Upload APK Debug - ${{ env.ScreenTime }}
+      - name: Upload APK Debug - ${{ env.repository_name }}
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.3 June 2024 }} - ${{ env.playstore_name }} - ${{ env.ScreenTime }} - APK(s) debug generated
+          name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - APK(s) debug generated
           path: ${{ env.main_project_module }}/build/outputs/apk/debug/
 
       # Noted For Output [main_project_module]/build/outputs/apk/release/
-      - name: Upload APK Release - ${{ env.ScreenTime }}
+      - name: Upload APK Release - ${{ env.repository_name }}
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.3 June 2024 }} - ${{ env.playstore_name }} - ${{ env.ScreenTime }} - APK(s) release generated
+          name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - APK(s) release generated
           path: ${{ env.main_project_module }}/build/outputs/apk/release/
 
       # Noted For Output [main_project_module]/build/outputs/bundle/release/
-      - name: Upload AAB (App Bundle) Release - ${{ env.ScreenTime }}
+      - name: Upload AAB (App Bundle) Release - ${{ env.repository_name }}
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.3 June 2024 }} - ${{ env.playstore_name }} - ${{ env.ScreenTime }} - App bundle(s) AAB release generated
+          name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - App bundle(s) AAB release generated
           path: ${{ env.main_project_module }}/build/outputs/bundle/release/
